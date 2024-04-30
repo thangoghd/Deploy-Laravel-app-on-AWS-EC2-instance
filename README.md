@@ -1,10 +1,6 @@
-### Youtube
-Part 1 - https://www.youtube.com/watch?v=xI9UW6VET08
-
-Part 2 - https://www.youtube.com/watch?v=olv2DqFB164
 
 ### CONNECT
-ssh -i pemfile user@ip
+ssh -i pemfile user@ipv4public
 
 ### ROOT
 sudo su
@@ -24,19 +20,25 @@ add-apt-repository ppa:ondrej/php
 
 apt-get update
 
-apt-get install php7.2 php7.2-mysql php7.2-fpm php7.2-xml php7.2-gd php7.2-opcache php7.2-mbstring
+apt-get install php php-fpm php-xml php-gd php-opcache php-mbstring
 
 ### INSTALL MYSQL AND SET USER
 apt-get install mysql-server
 
-CREATE USER 'tenuser'@'localhost' IDENTIFIED BY 'matkhau';
+mysql -u root -p
 
-GRANT ALL PRIVILEGES ON * . * TO 'tenuser'@'localhost';
+CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
+
+GRANT ALL PRIVILEGES ON database_name . * TO 'your_username'@'localhost';
 
 FLUSH PRIVILEGES;
 
+EXIT;
+
 ### INSTALL COMPOSER
-wget https://getcomposer.org/download/1.10.5/composer.phar
+cd /var/html
+
+wget https://getcomposer.org/download/latest-stable/composer.phar
 
 ### CHECK FREE MEMORY / ADD SWAP
 free -m
@@ -49,7 +51,11 @@ free -m
 
 
 ### INSTALL LARAVEL FROM GIT
-git clone -b 5.7 https://github.com/laravel/laravel.git
+cd /var/www
+
+git clone -b your_branch your_repo_url
+
+cd /your_repo_name
 
 cp .env.example .env
 
@@ -65,11 +71,13 @@ php artisan make:auth
 chown -R www-data:www-data storage/
 
 ### NGINX CONFIG FOR LARAVEL
+vi /etc/nginx/sites-available/default
+
 ```
 server {
     listen 80;
-    server_name example.com;
-    root /example.com/public;
+    server_name _;
+    root your_repo_path;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
@@ -89,7 +97,7 @@ server {
     error_page 404 /index.php;
 
     location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php{php_version}-fpm.sock; #Replace {php_version} with the number of php version you installed
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
@@ -100,8 +108,19 @@ server {
     }
 }
 ```
+
+### IMPORT DATA FROM SQL FILE INTO MYSQL VIA COMMAND LINE
+mysql -u your_username -p your_password -D your_database < your_sql_file.sql
+
 ### NGINX CHECK STATUS CONFIG
 nginx -t
+
+
+### MIGRATING FROM APACHE TO NGINX ON AN UBUNTU VPS
+sudo service apache2 stop
+
+sudo systemctl disable apache2
+
 
 ### NGINX RESTART SERVICE AND CHECK STATUS
 service nginx restart
