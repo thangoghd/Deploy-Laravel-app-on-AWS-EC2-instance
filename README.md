@@ -15,7 +15,7 @@ apt-get update
 
 apt-get install nginx
 
-### INSTALL PHP-FPM7.2
+### INSTALL PHP-FPM
 add-apt-repository ppa:ondrej/php
 
 apt-get update
