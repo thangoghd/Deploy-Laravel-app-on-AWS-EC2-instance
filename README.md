@@ -27,6 +27,8 @@ apt-get install mysql-server
 
 mysql -u root -p
 
+CREATE DATABASE database_name;
+
 CREATE USER 'your_username'@'localhost' IDENTIFIED BY 'your_password';
 
 GRANT ALL PRIVILEGES ON database_name . * TO 'your_username'@'localhost';
