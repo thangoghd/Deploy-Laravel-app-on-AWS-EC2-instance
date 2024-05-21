@@ -112,7 +112,8 @@ server {
 ```
 
 ### IMPORT DATA FROM SQL FILE INTO MYSQL VIA COMMAND LINE
-mysql -u your_username -p your_password -D your_database < your_sql_file.sql
+mysql -u your_username -p your_database < your_sql_file.sql
+
 
 ### NGINX CHECK STATUS CONFIG
 nginx -t
