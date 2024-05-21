@@ -36,7 +36,7 @@ FLUSH PRIVILEGES;
 EXIT;
 
 ### INSTALL COMPOSER
-cd /var/html
+cd /var/www
 
 wget https://getcomposer.org/download/latest-stable/composer.phar
 
